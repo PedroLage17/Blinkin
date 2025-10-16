@@ -1608,79 +1608,42 @@ def index():
 
 @app.route('/scrape', methods=['POST'])
 def scrape():
-    try:
-        data = request.get_json()
-        url = data.get("url")
-        print(f"📍 URL recebido: {url}")
-        
-        if not url:
-            return jsonify({"error": "URL não fornecida"}), 400
+    data = request.get_json()
+    url = data.get("url")
+    print(url)
+    if not url:
+        return jsonify({"error": "URL não fornecida"}), 400
 
-        conversation_id = data.get("conversation_id")
-        if not conversation_id:
-            conversation_id = generate_conversation_id()
-        
-        print(f"🆔 Conversation ID: {conversation_id}")
-        
-        print("🌐 A fazer pedido HTTP...")
-        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
-        
+    conversation_id = data.get("conversation_id")
+    if not conversation_id:
+        conversation_id = generate_conversation_id()
+    
+    try:
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
         if response.status_code != 200:
             return jsonify({"error": f"Erro ao acessar URL: {response.status_code}"}), response.status_code
         
-        print("✅ Página carregada com sucesso")
-        
+        # Para ler páginas estáticas
         response.encoding = response.apparent_encoding
         html_content = response.text
         html_content = html_content.encode("utf-8").decode("utf-8", errors="ignore")
         
-        print(f"📄 HTML recebido: {len(html_content)} caracteres")
-        
-        print("🔍 A extrair categorias...")
         categories = extract_categories_from_html(html_content, url)
-        print(f"✅ {len(categories)} categorias extraídas")
-        
-        print("📝 A extrair texto...")
         extracted_text = extract_text_from_html(html_content, url)
-        print(f"✅ Texto extraído: {len(extracted_text)} caracteres")
         
-        print("🗄️ A criar/carregar vector store...")
+        # Criar um vector_store exclusivo para conversation_id 
         vector_store = get_conversation_vector_store(conversation_id)
-        print("✅ Vector store pronto")
+
+        save_to_chromadb(vector_store, conversation_id, url, extracted_text, categories) # tipo_noticia
+        return jsonify({
+            "message": "Página processada e armazenada no RAG", 
+            "conversation_id": conversation_id,
+            "categories_found": len(categories),
+            "debug_categories": categories[:5]  # Mostrar primeiras 5 para debug
+        })
         
-        print("💾 A guardar no ChromaDB...")
-        
-        # 🔧 ADICIONAR TRY-CATCH ESPECÍFICO AQUI
-        try:
-            success = save_to_chromadb(vector_store, conversation_id, url, extracted_text, categories)
-            
-            if success:
-                print("✅ Dados guardados com sucesso!")
-                return jsonify({
-                    "message": "Página processada e armazenada no RAG",
-                    "conversation_id": conversation_id,
-                    "categories_found": len(categories),
-                    "debug_categories": categories[:5]
-                })
-            else:
-                print("⚠️ Falha ao guardar no ChromaDB")
-                return jsonify({"error": "Falha ao guardar dados"}), 500
-                
-        except Exception as db_error:
-            print(f"❌ ERRO NO CHROMADB: {db_error}")
-            import traceback
-            traceback.print_exc()
-            return jsonify({"error": f"Erro no ChromaDB: {str(db_error)}"}), 500
-        
-    except requests.Timeout:
-        print("⏱️ Timeout ao aceder à página")
-        return jsonify({"error": "Timeout ao aceder à página"}), 504
-    
     except Exception as e:
-        print(f"❌ ERRO GERAL: {e}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({"error": f"Erro: {str(e)}"}), 500
+        return jsonify({"error": str(e)}), 500
     
 
 
