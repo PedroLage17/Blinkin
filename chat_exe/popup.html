@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Assistente virtual</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="container">
+    <button class="close-btn" aria-label="Fechar extensão">✖</button>
+    
+    <!-- Cabeçalho -->
+    <div class="header">
+      <h1 id="extensionTitle">Assistente Virtual</h1>
+    </div>
+
+    <hr class="hr">
+    <!--<button id="startBotButton" aria-label="Iniciar Assistente">Iniciar Assistente</button>
+-->
+    <hr class="hr">
+    <div id="conversation"  aria-live="polite"></div>
+
+    <label for="userInput"></label>
+    <textarea id="userInput"  
+      placeholder="Escreva a sua pergunta" 
+      rows="1" 
+      aria-label="Campo para escrever a sua pergunta"></textarea>
+    
+    <div class="organizer">
+      <div class="audio-controls">
+        <button id="voiceButton" class="btn-record" style="display: none;" aria-label="Gravar pergunta">
+          <span class="voice-icon">🎤</span>
+          <span class="voice-text">Gravar</span>
+        </button>
+      </div>
+
+      <div class="organizer-tts">
+        <button id="pauseResumeTTSButton" class="btn-tts" style="display: none;" aria-label="Pausar leitura" aria-pressed="false">
+          ⏸️ Pausar
+        </button>
+      </div>
+
+      <div class="tts-controls">
+        <div class="switch" id="TTSWrapper"  aria-label="Estado do TTS" role="switch" aria-checked="false" tabindex="0">
+          <span class="slider active" id="slider"></span>
+          <span class="tts-label">TTS</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="hr">
+    <button id="sendButton"  aria-label="Enviar Pergunta">
+      <span class="default-text">Enviar</span>
+      <span class="loading-text hidden" aria-live="polite">
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+      </span>
+    </button>
+
+    <hr class="hr">
+    <button id="newConversationButton"  aria-label="Nova Conversa">
+      <span class="default-text">Nova Conversa</span>
+      <span class="loading-text hidden" aria-live="polite">
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+        <span class="dot">•</span>
+      </span>
+    </button>
+
+    <section aria-labelledby="historico">
+      <h3 id="historico" >Conversas Anteriores</h3>
+      <button id="loadHistoryButton"  aria-label="Mostrar Histórico">Carregar Histórico</button>
+      <div id="history" ></div>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

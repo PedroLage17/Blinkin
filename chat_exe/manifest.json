@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Chatbot AI Extension",
+  "version": "1.0",
+  "description": "Extensão do navegador para conversar com o chatbot AI",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "microphone",
+    "http://127.0.0.1:5000/*"
+  ],
+  
+  "host_permissions": [
+    "*://*/*",
+    "http://127.0.0.1:5000/*"
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Assistente Bot"
+  },
+
+  "commands": {
+    "start_bot": {
+      "suggested_key": {
+        "default": "Alt+A",
+        "mac": "Command+A"
+      },
+      "description": "Iniciar bot diretamente"
+    }
+  },
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; media-src 'self' blob: data: mediastream:;"
+  },
+
+  "icons": {
+    "16": "img/icon.png",
+    "48": "img/icon.png",
+    "128": "img/icon.png"
+  }
+}
