@@ -168,7 +168,7 @@ def get_conversation_vector_store(conversation_id):
     # BASE_DIR global
     persist_directory = os.path.join(BASE_DIR, "chroma_store", conversation_id)
     
-    print(f"🗄️ ChromaDB path: {persist_directory}")
+    print(f"ChromaDB path: {persist_directory}")
     
     # Criar pasta
     try:
@@ -1853,4 +1853,3 @@ def STT():
     except Exception as e:
         print(f"Erro geral no STT: {str(e)}")
         return jsonify({'error': str(e)}), 500
-

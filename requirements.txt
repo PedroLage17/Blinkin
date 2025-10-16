@@ -19,7 +19,9 @@ requests==2.31.0
 
 # Audio processing
 pydub==0.25.1
-silero-vad==4.0.0
+silero-vad==5.1.2
+torch == 2.7.1
+torchaudio == 2.7.1
 
 # Token counting for OpenAI models
 tiktoken==0.5.1
