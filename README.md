@@ -10,8 +10,8 @@ AI assistant for blind people to navigate through news websites
 -> Abrir uma página no browser, e começar a utilizar o assistente
 
 
-Para ativar funcionalidade de TTS e SST
-No powershell instalar o ffmpeg (choco install ffmpeg)
+Para ativar funcionalidade de TTS e SST:
+-> No powershell instalar o ffmpeg (choco install ffmpeg)
 -> Aceda as extensões
 -> Clique em detalhes na extensão do Blinkin
 -> Em detalhes aceda as "Definições de Sites", e na opção do microfone selecione a opção "Permitir"
